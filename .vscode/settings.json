@@ -5,5 +5,9 @@
     "**/.config.old": true,
     "**/.gitignore": true,
     "**/.git": true,
+  },
+  "files.associations": {
+    "lv_examples.h": "c",
+    "lvgl.h": "c"
   }
 }

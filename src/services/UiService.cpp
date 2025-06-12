@@ -4,15 +4,45 @@
 #include "core/ServiceManager.h"
 #include "core/Log.h"
 
+#include "lvgl.h"
+#include "demos/lv_demos.h"
+
+#include "driver_backends.h"
+#include "simulator_util.h"
+#include "simulator_settings.h"
+
 #include <iostream>
 
 #define TAG "UI"
+
+static char *selected_backend;
 
 UiService::UiService(ServiceManager& mgr)
     : manager(mgr), status(ServiceStatus::UNINITIALIZED), enabled(true) {}
 
 void UiService::init() {
-    OS_LOGI("Init");
+    OS_LOGI("Init LVLG");
+
+    /* Initialize LVGL. */
+    lv_init();
+
+//     /* Initialize the configured backend */
+//     if (driver_backends_init_backend(selected_backend) == -1) {
+//         die("Failed to initialize display backend");
+//     }
+
+//     /* Enable for EVDEV support */
+// #if LV_USE_EVDEV
+//     if (driver_backends_init_backend("EVDEV") == -1) {
+//         die("Failed to initialize evdev");
+//     }
+// #endif
+
+    lv_demo_widgets();
+
+    /* Enter the run loop of the selected backend */
+    driver_backends_run_loop();
+
     status = ServiceStatus::INITIALIZED;
 }
 

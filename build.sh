@@ -6,6 +6,8 @@ CONFIG_DIR="config"
 CONFIG_FILE=".config"
 KCONFIG_FILE="main/Kconfig"
 
+export PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # 确保 config 目录存在
 mkdir -p "$CONFIG_DIR"
 
@@ -82,6 +84,9 @@ function save_defconfig() {
 
 
 case "$1" in
+    help)
+        show_usage
+        ;;
     config)
         load_config
         ;;
@@ -100,7 +105,9 @@ case "$1" in
         save_defconfig "$2"
         ;;
     *)
-        show_usage
+        cp .config src/lvgl/
+        mkdir build && cd build && cmake .. -DLV_USE_KCONFIG=ON
+        make -j16
         exit 1
         ;;
 esac
