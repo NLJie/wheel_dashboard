@@ -32,7 +32,7 @@ target_sources(wheel_meter_display PRIVATE
     src/services/CastService.cpp
 
     # 主程序
-    main.cpp
+    main/main.cpp
 )
 
 # 查找依赖库 (根据实际需要添加)

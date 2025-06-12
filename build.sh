@@ -4,30 +4,45 @@ set -e
 
 CONFIG_DIR="config"
 CONFIG_FILE=".config"
-KCONFIG_FILE="Kconfig"
+KCONFIG_FILE="main/Kconfig"
 
 # 确保 config 目录存在
 mkdir -p "$CONFIG_DIR"
 
 function show_usage() {
     echo "Usage:"
-    echo "  $0 config <defconfig_name>          # 载入 config/defconfig_name 作为当前配置"
-    echo "  $0 menuconfig                       # 进入menuconfig界面编辑配置"
-    echo "  $0 savedefconfig <defconfig_name>   # 保存当前配置为 config/defconfig_name"
-    echo "  $0 full_clean                       # 清除工程"
+    echo "  $0 config           # 载入 config/defconfig_name 作为当前配置"
+    echo "  $0 menuconfig       # 进入menuconfig界面编辑配置"
+    echo "  $0 savedefconfig    # 保存当前配置为 config/defconfig_name"
+    echo "  $0 full_clean       # 清除工程"
 }
 
 function load_config() {
-    local name=$1
-    local defconfig_path="$CONFIG_DIR/${name}_defconfig"
-    if [ ! -f "$defconfig_path" ]; then
-        echo "Error: defconfig file '$defconfig_path' not found."
+    local config_files=($CONFIG_DIR/*_defconfig)
+
+    if [ ${#config_files[@]} -eq 0 ]; then
+        echo "Error: no defconfig files found in $CONFIG_DIR."
         exit 1
     fi
 
-    echo "Loading config from $defconfig_path ..."
-    cp "$defconfig_path" "$CONFIG_FILE"
+    echo "Available configuration files:"
+    local i=1
+    for file in "${config_files[@]}"; do
+        echo "  [$i] $(basename "$file")"
+        ((i++))
+    done
+
+    read -p "Select a configuration to load [1-${#config_files[@]}]: " index
+    if [[ $index -lt 1 || $index -gt ${#config_files[@]} ]]; then
+        echo "Invalid selection."
+        exit 1
+    fi
+
+    local selected_file="${config_files[$((index-1))]}"
+    echo "Loading config from $selected_file ..."
+    cp "$selected_file" "$CONFIG_FILE"
 }
+
 
 function run_menuconfig() {
     if [ ! -f "$CONFIG_FILE" ]; then
@@ -68,12 +83,7 @@ function save_defconfig() {
 
 case "$1" in
     config)
-        if [ -z "$2" ]; then
-            echo "Error: defconfig name required."
-            show_usage
-            exit 1
-        fi
-        load_config "$2"
+        load_config
         ;;
     menuconfig)
         run_menuconfig

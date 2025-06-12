@@ -1,0 +1,9 @@
+{
+  "files.exclude": {
+    "**/build": true,
+    "**/.config": true,
+    "**/.config.old": true,
+    "**/.gitignore": true,
+    "**/.git": true,
+  }
+}
