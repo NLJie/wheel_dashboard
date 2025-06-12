@@ -1,0 +1,57 @@
+choice
+    prompt "选择应用"
+    default APP_MOTORBIKE_DEMO
+    help
+      请选择一个应用程序
+
+config APP_MOTORBIKE_DEMO
+    bool "摩托车仪表案例"
+    help
+      摩托车仪表UI案例;
+
+config APP_MOTORBIKE_CARLIFE
+    bool "摩托车仪表-CarLife"
+    help
+      摩托车仪表案例,支持百度CarLife;
+
+endchoice
+
+choice
+    prompt "选择 CPU 平台"
+    default PLATFORM_ARTINCHIP_D21X
+    help
+      请选择一个芯片平台
+
+config PLATFORM_ROCKCHIP_RK3568
+    bool "瑞芯微 RK3568"
+
+config PLATFORM_ARTINCHIP_D21X
+    bool "匠心创 D21x"
+
+endchoice
+
+choice
+    prompt "选择硬件板子"
+    default BOARD_5_INCHES_PANEL
+    help
+      请选择一个硬件板子
+      
+config BOARD_5_INCHES_PANEL
+    bool "5寸仪表Demo板子"
+    depends on PLATFORM_ARTINCHIP_D21X
+
+config BOARD_7_INCHES_PANEL
+    bool "7寸仪表Demo板子"
+    depends on PLATFORM_ARTINCHIP_D21X
+
+config BOARD_B1
+    bool "芯片 B1"
+    depends on PLATFORM_ROCKCHIP_RK3568
+
+config BOARD_B2
+    bool "芯片 B2"
+    depends on PLATFORM_ROCKCHIP_RK3568
+
+endchoice
+
+source "src/lvgl/Kconfig"

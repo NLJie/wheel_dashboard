@@ -14,7 +14,8 @@
 
 ## 显示服务：UiService
 
-- 显示GUI框架LVGL;
+- 显示GUI框架LVGL：git clone --branch v9.3.0 --depth 1 https://github.com/lvgl/lvgl.git
+
 - 支持显示车速、里程、报警信息等;
 
 ## 传感器服务: SensorService
@@ -44,28 +45,5 @@
 mkdir build && cd build && cmake ..
 make
 
-wheel_meter_display/
-├── CMakeLists.txt
-├── include/
-│   ├── services/
-│   │   ├── ui_service.h
-│   │   ├── network_service.h
-│   │   ├── sensor_service.h
-│   │   ├── bluetooth_service.h
-│   │   ├── cast_service.h
-│   │   └── ota_service.h
-│   └── core/
-│       ├── service_manager.h
-│       └── types.h
-├── src/
-│   ├── services/
-│   │   ├── ui_service.cpp
-│   │   ├── network_service.cpp
-│   │   ├── sensor_service.cpp
-│   │   ├── bluetooth_service.cpp
-│   │   ├── cast_service.cpp
-│   │   └── ota_service.cpp
-│   └── core/
-│       └── service_manager.cpp
-└── apps/
-    └── main.cpp
+./build.sh
+
