@@ -1,0 +1,3 @@
+[submodule "tools/toolchains"]
+	path = tools/toolchains
+	url = https://github.com/NLJie/toolchains.git

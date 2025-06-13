@@ -7,6 +7,7 @@ CONFIG_FILE=".config"
 KCONFIG_FILE="main/Kconfig"
 
 export PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+TOOLCHAIN_FILE="$PROJECT_ROOT/tools/toolchains/gcc-riscv64.cmake"
 
 # 确保 config 目录存在
 mkdir -p "$CONFIG_DIR"
@@ -103,6 +104,15 @@ case "$1" in
             exit 1
         fi
         save_defconfig "$2"
+        ;;
+    riscv)
+        cp .config src/lvgl/
+        mkdir -p build && cd build
+        cmake .. -DLV_USE_KCONFIG=ON \
+            -DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN_FILE"
+        make -j$(nproc)
+        adb push wheel_meter_display /root/ || true
+        exit 0
         ;;
     *)
         cp .config src/lvgl/

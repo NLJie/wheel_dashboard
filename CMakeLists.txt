@@ -19,13 +19,13 @@ set(LV_USE_KCONFIG ON CACHE BOOL "Enable Kconfig support")
 set(LV_BUILD_USE_KCONFIG ON CACHE BOOL "Enable Kconfig support")
 
 # if (LV_USE_LINUX_FBDEV)
-    list(APPEND LV_LINUX_BACKEND_SRC main/lib/display_backends/fbdev.c)
+    list(APPEND LV_LINUX_BACKEND_SRC driver/display_backends/fbdev.c)
     message("${GY}==========> Including FBDEV support${E}")
 # endif()
 
 # if (LV_USE_EVDEV)
 #     message("${GY}==========> Including EVDEV support${E}")
-#     list(APPEND LV_LINUX_BACKEND_SRC main/lib/indev_backends/evdev.c)
+#     list(APPEND LV_LINUX_BACKEND_SRC driver/indev_backends/evdev.c)
 # endif()
 
 # 设置 LVGL 库路径
@@ -37,10 +37,10 @@ add_executable(wheel_meter_display)
 # 包含目录
 target_include_directories(wheel_meter_display PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/main/lib
+    ${CMAKE_CURRENT_SOURCE_DIR}/driver
 )
 
-file(GLOB LV_LINUX_SRC main/lib/*.c)
+file(GLOB LV_LINUX_SRC driver/*.c)
 
 # 源文件
 target_sources(wheel_meter_display PRIVATE
@@ -58,11 +58,11 @@ target_sources(wheel_meter_display PRIVATE
     # 主程序
     main/main.cpp
 
-    main/lib/driver_backends.c
-    main/lib/mouse_cursor_icon.c
-    main/lib/simulator_util.c
-    main/lib/display_backends/fbdev.c
-    main/lib/indev_backends/evdev.c
+    driver/driver_backends.c
+    driver/mouse_cursor_icon.c
+    driver/simulator_util.c
+    driver/display_backends/fbdev.c
+    driver/indev_backends/evdev.c
 )
 
 # 查找依赖库 (根据实际需要添加)
