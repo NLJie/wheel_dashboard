@@ -18,14 +18,11 @@ public:
     template<typename T>
     std::shared_ptr<T> getService();
 
-    // 启动所有服务
-    void startService();
-
     // 初始化所有服务
-    // void initAll();
+    void initAll();
 
-    // // 启动所有服务
-    // void startAll();
+    // 启动所有服务
+    void startAll();
 
     // 停止所有服务
     void stopAll();

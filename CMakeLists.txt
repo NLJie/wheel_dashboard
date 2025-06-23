@@ -9,19 +9,24 @@ project(WheelMeterDisplay
 # 设置C++标准
 # set(BUILD_ROOT_DIR "$ENV{PROJECT_ROOT}/build")
 
+
+# C++标准设置（推荐方式）
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_C_FLAGS_RELEASE "-Wall -O3 -DNDEBUG")
+set(CMAKE_CXX_FLAGS_RELEASE "-Wall -O3 -DNDEBUG")
+
 include(scripts/common_config.cmake)
 
-set(LV_USE_KCONFIG ON CACHE BOOL "Enable Kconfig support")
+# set(LV_USE_KCONFIG ON CACHE BOOL "Enable Kconfig support")
 
-set(LV_BUILD_USE_KCONFIG ON CACHE BOOL "Enable Kconfig support")
+# set(LV_BUILD_USE_KCONFIG ON CACHE BOOL "Enable Kconfig support")
 
-# if (LV_USE_LINUX_FBDEV)
+if (LV_USE_LINUX_FBDEV)
     list(APPEND LV_LINUX_BACKEND_SRC main/lib/display_backends/fbdev.c)
     message("${GY}==========> Including FBDEV support${E}")
-# endif()
+endif()
 
 # if (LV_USE_EVDEV)
 #     message("${GY}==========> Including EVDEV support${E}")
@@ -62,6 +67,7 @@ target_sources(wheel_meter_display PRIVATE
     main/lib/mouse_cursor_icon.c
     main/lib/simulator_util.c
     main/lib/display_backends/fbdev.c
+    main/lib/display_backends/aic_fbdev.c
     main/lib/indev_backends/evdev.c
 )
 

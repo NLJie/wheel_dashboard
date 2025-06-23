@@ -15,8 +15,6 @@
 
 #define TAG "UI"
 
-static char *selected_backend;
-
 UiService::UiService(ServiceManager& mgr)
     : manager(mgr), status(ServiceStatus::UNINITIALIZED), enabled(true) {}
 
@@ -26,19 +24,27 @@ void UiService::init() {
     /* Initialize LVGL. */
     lv_init();
 
-//     /* Initialize the configured backend */
-//     if (driver_backends_init_backend(selected_backend) == -1) {
-//         die("Failed to initialize display backend");
-//     }
-
-//     /* Enable for EVDEV support */
-// #if LV_USE_EVDEV
-//     if (driver_backends_init_backend("EVDEV") == -1) {
-//         die("Failed to initialize evdev");
-//     }
-// #endif
-
-    lv_demo_widgets();
+    /* Initialize the configured backend */
+    driver_backends_register();
+    driver_backends_print_supported();
+    if (driver_backends_init_backend("FBDEV") == -1) {
+        die("Failed to initialize display backend");
+    }else{
+        OS_LOGI("显示后端初始化成功");
+    }
+    // if (driver_backends_init_backend("AIC_FBDEV") == -1) {
+    //     die("Failed to initialize display backend");
+    // }else{
+    //     OS_LOGI("显示后端初始化成功");
+    // }
+    /* Enable for EVDEV support */
+#if LV_USE_EVDEV
+    if (driver_backends_init_backend("EVDEV") == -1) {
+        die("Failed to initialize evdev");
+    }
+#endif
+    
+    lv_demo_benchmark();
 
     /* Enter the run loop of the selected backend */
     driver_backends_run_loop();

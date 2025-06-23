@@ -8,6 +8,8 @@ KCONFIG_FILE="main/Kconfig"
 
 export PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+TOOLCHAIN_FILE="$PROJECT_ROOT/toolchains/gcc-d21x-riscv64.cmake"
+
 # 确保 config 目录存在
 mkdir -p "$CONFIG_DIR"
 
@@ -105,8 +107,11 @@ case "$1" in
         save_defconfig "$2"
         ;;
     *)
-        cp .config src/lvgl/
-        mkdir build && cd build && cmake .. -DLV_USE_KCONFIG=ON
+        # cp .config src/lvgl/
+        mkdir build && cd build 
+        cmake .. \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN_FILE"        
         make -j16
         exit 1
         ;;

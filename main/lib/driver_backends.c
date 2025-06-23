@@ -38,29 +38,30 @@
      LV_USE_LINUX_DRM == 0 && \
      LV_USE_OPENGLES == 0 && \
      LV_USE_X11 == 0 && \
-     LV_USE_LINUX_FBDEV == 0
+     LV_USE_LINUX_FBDEV == 0  && \
+     LV_USE_LINUX_AIC_FBDEV == 0
  
  #error Unsupported configuration - Please select at least one graphics backend in lv_conf.h
  #endif
  
  /**********************
-  *      TYPEDEFS
+  *      类型定义
   **********************/
  
  /**********************
-  *  STATIC PROTOTYPES
+  *  静态函数声明
   **********************/
  
- /* Internal functions */
+ /* 内部函数 */
  static void register_backends(void);
  
  /**********************
-  *  STATIC VARIABLES
+  *  静态变量
   **********************/
- 
- /* The default backend is the one that will end up at index 0
-  * To add support for a new driver backend add the declaration
-  * and append an entry to the available_backends array
+  
+ /* 默认后端将位于索引 0
+  * 若需添加对新后端驱动的支持，请添加声明
+  * 并将其加入 available_backends 数组
   */
  backend_init_t available_backends[] = {
  
@@ -68,6 +69,10 @@
      backend_init_fbdev,
  #endif
  
+ #if LV_USE_LINUX_AIC_FBDEV
+     backend_init_aic_fbdev,
+ #endif
+
  #if LV_USE_LINUX_DRM
      backend_init_drm,
  #endif
@@ -94,10 +99,10 @@
      NULL    /* Sentinel */
  };
  
- /* Contains the backend descriptors */
+ /* 存储初始化完成后的后端实例 */
  static backend_t *backends[sizeof(available_backends) / sizeof(available_backends[0])];
  
- /* Set once the user selects a backend - or it is set to the default backend */
+ /* 当前选中的显示后端 */
  static backend_t *sel_display_backend = NULL;
  
  /**********************

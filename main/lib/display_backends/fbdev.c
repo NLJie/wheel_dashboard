@@ -1,19 +1,19 @@
 /**
  * @file fbdev.c
  *
- * Legacy framebuffer device
+ * 传统 framebuffer 设备
  *
- * Based on the original file from the repository
+ * 基于原始仓库中的文件修改而来
  *
- * Move to a separate file
- * 2025 EDGEMTech Ltd.
+ * 拆分到独立文件
+ * 版权所有 © 2025 EDGEMTech Ltd.
  *
- * Author: EDGEMTech Ltd, Erik Tagirov (erik.tagirov@edgemtech.ch)
+ * 作者: EDGEMTech Ltd, Erik Tagirov (erik.tagirov@edgemtech.ch)
  *
  */
 
 /*********************
- *      INCLUDES
+ *      引入头文件
  *********************/
 #include <unistd.h>
 #include <stdlib.h>
@@ -25,39 +25,39 @@
 #include "../backends.h"
 
 /*********************
- *      DEFINES
+ *      宏定义
  *********************/
 
 /**********************
- *      TYPEDEFS
+ *      类型定义
  **********************/
 
 /**********************
- *  STATIC PROTOTYPES
+ *  静态函数声明
  **********************/
 
 static lv_display_t *init_fbdev(void);
 static void run_loop_fbdev(void);
 
 /**********************
- *  STATIC VARIABLES
+ *  静态变量
  **********************/
 
 static char *backend_name = "FBDEV";
 
 /**********************
- *      MACROS
+ *      宏定义
  **********************/
 
 /**********************
- *   GLOBAL FUNCTIONS
+ *   全局函数
  **********************/
 
 /**
- * Register the backend
+ * 注册 framebuffer 后端
  *
- * @param backend the backend descriptor
- * @description configures the descriptor
+ * @param backend 后端描述结构体
+ * @description 配置后端描述符
  */
 int backend_init_fbdev(backend_t *backend)
 {
@@ -75,13 +75,13 @@ int backend_init_fbdev(backend_t *backend)
 }
 
 /**********************
- *   STATIC FUNCTIONS
+ *   静态函数
  **********************/
 
 /**
- * Initialize the fbdev driver
+ * 初始化 framebuffer 驱动
  *
- * @return the LVGL display
+ * @return 返回创建的 LVGL 显示对象
  */
 static lv_display_t *init_fbdev(void)
 {
@@ -98,18 +98,18 @@ static lv_display_t *init_fbdev(void)
 }
 
 /**
- * The run loop of the fbdev driver
+ * framebuffer 驱动的主循环
  */
 static void run_loop_fbdev(void)
 {
     uint32_t idle_time;
 
-    /* Handle LVGL tasks */
+    /* 处理 LVGL 的任务 */
     while (true) {
 
-        /* Returns the time to the next timer execution */
+        /* 返回下一个定时器任务的延时时间（ms） */
         idle_time = lv_timer_handler();
-        usleep(idle_time * 1000);
+        usleep(idle_time * 1000);  // 转换为微秒
     }
 }
 

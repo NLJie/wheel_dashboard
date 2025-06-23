@@ -17,6 +17,7 @@ COMPONENT_SRCDIRS := . \
                   src/draw \
                   src/draw/arm2d \
                   src/draw/nxp \
+                  src/draw/aic \
                   src/draw/sdl \
                   src/draw/stm32_dma2d \
                   src/draw/sw \

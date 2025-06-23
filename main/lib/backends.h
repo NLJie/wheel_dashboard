@@ -1,11 +1,11 @@
 /**
  * @file backends.h
  *
- * Interface for abstration layer of a device backend
+ * 设备后端抽象层的接口定义
  *
- * Copyright (c) 2025 EDGEMTech Ltd.
+ * 版权所有 (c) 2025 EDGEMTech Ltd.
  *
- * Author: EDGEMTech Ltd, Erik Tagirov (erik.tagirov@edgemtech.ch)
+ * 作者: EDGEMTech Ltd, Erik Tagirov (erik.tagirov@edgemtech.ch)
  *
  */
 #ifndef BACKENDS_H
@@ -16,82 +16,82 @@ extern "C" {
 #endif
 
 /*********************
- *      INCLUDES
+ *      引入头文件
  *********************/
 
 /*********************
- *      DEFINES
+ *      宏定义
  *********************/
 
 /**********************
- *      TYPEDEFS
+ *      类型定义
  **********************/
-/* Prototype of the display initialization functions */
+
+/* 显示驱动初始化函数的原型 */
 typedef lv_display_t *(*display_init_t)(void);
 
-/* Prototype of the run loop */
+/* 主循环函数的原型 */
 typedef void (*run_loop_t)(void);
 
-/* Represents a display driver handle */
+/* 表示一个显示驱动的句柄 */
 typedef struct {
-    display_init_t init_display; /* The display creation/initialization function */
-    run_loop_t run_loop;         /* The run loop of the driver handle */
-    lv_display_t *display;       /* The LVGL display that was created */
+    display_init_t init_display; /* 创建/初始化显示的函数 */
+    run_loop_t run_loop;         /* 驱动句柄的主循环函数 */
+    lv_display_t *display;       /* 已创建的 LVGL 显示对象 */
 } display_backend_t;
 
-/* Prototype for the initialization of an indev driver backend */
+/* 输入设备驱动初始化函数的原型 */
 typedef lv_indev_t *(*indev_init_t)(lv_display_t *display);
 
-/* Represents an indev driver backend */
+/* 表示一个输入设备驱动后端 */
 typedef struct {
-    indev_init_t init_indev;
+    indev_init_t init_indev; /* 初始化输入设备的函数 */
 } indev_backend_t;
 
-/* Regroup all different types of driver backend */
+/* 将所有类型的驱动后端统一封装 */
 typedef union {
-    display_backend_t *display;
-    indev_backend_t *indev;
+    display_backend_t *display; /* 显示设备后端 */
+    indev_backend_t *indev;     /* 输入设备后端 */
 } backend_handle_t;
 
-/* Define each type of driver backend */
+/* 定义驱动后端的类型 */
 typedef enum {
-    BACKEND_DISPLAY,
-    BACKEND_INDEV
+    BACKEND_DISPLAY, /* 显示后端 */
+    BACKEND_INDEV    /* 输入设备后端 */
 } backend_type_t;
 
-/* Driver backend descriptor */
+/* 驱动后端描述结构体 */
 typedef struct {
-    backend_handle_t *handle;
-    char *name;
-    backend_type_t type;
+    backend_handle_t *handle; /* 后端驱动的句柄（显示或输入） */
+    char *name;               /* 后端名称 */
+    backend_type_t type;      /* 后端类型（显示或输入） */
 } backend_t;
 
-/* Prototype used to register a backend */
+/* 用于注册后端的函数原型 */
 typedef int (*backend_init_t)(backend_t *);
 
 /**********************
- * GLOBAL PROTOTYPES
+ * 全局函数声明
  **********************/
 
-/* Graphics backends */
-int backend_init_fbdev(backend_t *backend);
-int backend_init_drm(backend_t *backend);
-int backend_init_sdl(backend_t *backend);
-int backend_init_glfw3(backend_t *backend);
-int backend_init_wayland(backend_t *backend);
-int backend_init_x11(backend_t *backend);
+/* 图形显示后端初始化函数 */
+int backend_init_fbdev(backend_t *backend);   /* Linux framebuffer */
+int backend_init_aic_fbdev(backend_t *backend);   /* Linux framebuffer */
+int backend_init_drm(backend_t *backend);     /* Linux DRM */
+int backend_init_sdl(backend_t *backend);     /* SDL */
+int backend_init_glfw3(backend_t *backend);   /* OpenGL GLFW3 */
+int backend_init_wayland(backend_t *backend); /* Wayland */
+int backend_init_x11(backend_t *backend);     /* X11 */
 
-/* Input device driver backends */
-int backend_init_evdev(backend_t *backend);
+/* 输入设备后端初始化函数 */
+int backend_init_evdev(backend_t *backend);   /* Linux evdev 输入事件接口 */
 
 /**********************
- *      MACROS
+ *      宏定义
  **********************/
 
 #ifdef __cplusplus
-} /*extern "C"*/
+} /* extern "C" */
 #endif
 
-#endif /*BACKEND_H*/
-
-
+#endif /* BACKENDS_H */

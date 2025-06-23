@@ -47,3 +47,33 @@ make
 
 ./build.sh
 
+# 四、文件结构
+
+```bash
+.
+├── build.sh                      # 一键构建脚本（可调用 cmake + ninja/make）
+├── CMakeLists.txt                # 顶层 CMake 配置
+├── README.md
+├── config/                       # 存放 defconfig 预设文件（用户配置）
+│   ├── motorbike_carlife_panel_defconfig
+│   └── motorbike_panel_defconfig
+├── toolchain/                    # 存放交叉编译工具链文件
+│   └── toolchain-arm-linux.cmake
+├── cmake/                        # 存放公共 CMake 模块（建议改名）
+│   ├── common_config.cmake
+│   └── parse_config.cmake
+├── include/                      # 头文件
+│   ├── core/
+│   └── services/
+├── src/                          # 源码实现
+│   ├── core/
+│   ├── lvgl/
+│   └── services/
+├── main/                         # 程序入口和配置菜单
+│   ├── main.cpp
+│   ├── Kconfig
+│   └── lib/                     # 如果是第三方静态库或接口封装放这里
+└── out/                          # 输出构建目录（build 产物）
+    └── <arch>/
+
+```
